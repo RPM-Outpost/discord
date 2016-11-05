@@ -4,7 +4,7 @@
 # desktop_file
 
 %define install_dir /opt/discord
-%define apps_dir /usr/local/share/applications
+%define apps_dir /usr/share/applications
 
 Name:		discord
 Version:	%{version_number}
