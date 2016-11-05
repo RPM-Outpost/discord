@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=_version
+Type=Application
+Name=Discord
+Icon=/opt/discord/_icon
+Exec=/opt/discord/DiscordCanary
+Comment=Free voice and text chat for gamers
+Categories=Communication;Internet;
+Terminal=false
+
