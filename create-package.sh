@@ -11,6 +11,21 @@ work_dir=$PWD/work
 downloaded_dir=$work_dir/discord
 desktop_file=$work_dir/discord.desktop
 
+# Checks that rpmbuild is installed
+if ! type 'rpmbuild' > /dev/null
+then
+	echo "You need the rpm development tools to create rpm packages"
+	read -p "Do you want to install rpmdevtools now? This will run sudo dnf install rpmdevtools. [y/N]" answer
+	case $answer in
+		[Yy]* ) sudo dnf install rpmdevtools;;
+		* ) 
+			echo "Ok, I won't install rpmdevtools."
+			exit
+		;;
+	esac
+else
+	echo "rpmbuild detected!"
+fi
 
 # Download the discord tar.gz archive and puts its name in the global variable archive_name.
 function download_discord {
