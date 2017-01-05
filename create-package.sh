@@ -3,13 +3,13 @@
 # This script downloads the latest version of Discord for linux, and creates a package with rpmbuild.
 
 # Defines the needed paths
-desktop_model=$PWD/discord.desktop
-spec_file=$PWD/discord.spec
+desktop_model="$PWD/discord.desktop"
+spec_file="$PWD/discord.spec"
 
-rpm_dir=$PWD/RPMs
-work_dir=$PWD/work
-downloaded_dir=$work_dir/discord
-desktop_file=$work_dir/discord.desktop
+rpm_dir="$PWD/RPMs"
+work_dir="$PWD/work"
+downloaded_dir="$work_dir/discord"
+desktop_file="$work_dir/discord.desktop"
 
 # It's a bad idea to run rpmbuild as root!
 if [ "$(id -u)" = "0" ]; then
@@ -78,7 +78,7 @@ manage_dir "$rpm_dir" 'RPMs'
 cd "$work_dir"
 
 # Downloads discord if needed
-archive_name=$(ls *.tar.gz 2>/dev/null)
+archive_name="$(ls *.tar.gz 2>/dev/null)"
 if [ $? -eq 0 ]; then
 	echo "Found $archive_name"
 	read -n 1 -p 'Do you want to use this archive instead of downloading a new one? [y/N]' answer
@@ -107,7 +107,7 @@ tar -xzf "$archive_name" -C "$downloaded_dir" --strip 1
 
 # Gets the discord's version number + icon file name
 echo 'Analysing the files...'
-version_number=$(echo "$archive_name" | cut -d'-' -f3 | rev | cut -c 8- | rev)
+version_number="$(echo "$archive_name" | cut -d'-' -f3 | rev | cut -c 8- | rev)"
 # Explaination on how it works:
 # cut -d'-' -f3  splits the archive's name around the '-' character, and takes the 3rd part
 # For example if archive_name is "discord-canary-0.0.10.tar.gz" we get "0.0.10.tar.gz"
@@ -116,7 +116,7 @@ version_number=$(echo "$archive_name" | cut -d'-' -f3 | rev | cut -c 8- | rev)
 # So in our example we'll get version_number=0.0.10
 
 cd "$downloaded_dir"
-icon_name=$(ls *.png)
+icon_name="$(ls *.png)"
 echo "Archive: $archive_name"
 echo "Version: $version_number"
 echo "Icon: $icon_name"
