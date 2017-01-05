@@ -127,7 +127,9 @@ sed "s/_version/$version_number/; s/_icon/$icon_name/" "$desktop_model" > "$desk
 
 # Builds the packages
 echo 'Creating the RPM package...'
-rpmbuild -bb $spec_file --define "_topdir $work_dir" --define "_rpmdir $rpm_dir" --define "version_number $version_number" --define "downloaded_dir $downloaded_dir" --define "desktop_file $desktop_file"
+rpmbuild --quiet -bb "$spec_file" --define "_topdir $work_dir" --define "_rpmdir $rpm_dir"\
+	--define "version_number $version_number" --define "downloaded_dir $downloaded_dir"\
+	--define "desktop_file $desktop_file"
 
 # Done
 echo '-----------'
