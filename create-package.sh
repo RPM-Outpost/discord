@@ -2,7 +2,7 @@
 # Author: TheElectronWill
 # This script downloads the latest version of Discord for linux, and creates a package with rpmbuild.
 
-# Define the needed paths
+# Defines the needed paths
 desktop_model=$PWD/discord.desktop
 spec_file=$PWD/discord.spec
 
@@ -19,7 +19,7 @@ if [ "$(id -u)" = "0" ]; then
 	echo 'Actually, badly written RPM spec files may execute dangerous command in the system directories.'
 	echo 'So it is REALLY safer not to run this script as root.'
 	echo 'If you still want to run this script as root, type "do it!" within 5 seconds (type anything else to exit):'
-	read -t 5 -n 6 -p 'Do you really want to do it (not recommended)? ' answer
+	read -t 5 -p 'Do you really want to do it (not recommended)? ' answer
 	if [ "$answer" != "do it!" ]; then
 		exit
 	fi
@@ -29,7 +29,8 @@ fi
 if ! type 'rpmbuild' > /dev/null; then
 	echo 'You need the rpm development tools to create rpm packages.'
 	read -n 1 -p 'Do you want to install the rpmdevtools package now? [y/N]' answer
-	case $answer in
+	echo
+	case "$answer" in
 		y|Y)
 			sudo -p 'Enter your password to install rpmdevtools: ' dnf install rpmdevtools
 			;;
@@ -44,21 +45,21 @@ fi
 # Downloads the discord tar.gz archive and puts its name in the global variable archive_name.
 download_discord() {
 	echo 'Downloading discord canary for linux...'
-	wget -q --show-progress --content-disposition "https://discordapp.com/api/download/canary?platform=linux&format=tar.gz"
-	archive_name=$(ls *.tar.gz)
+	wget -q --show-progress --content-disposition 'https://discordapp.com/api/download/canary?platform=linux&format=tar.gz'
+	archive_name="$(ls *.tar.gz)"
 }
 
 # Asks the user if they want to remove the specified directory, and removes it if they want to.
 ask_remove_dir() {
-	read -p "Do you want to remove the \"$1\" directory? [y/N]" answer
-	case $answer in
+	read -n 1 -p "Do you want to remove the \"$1\" directory? [y/N]" answer
+	echo
+	case "$answer" in
 		y|Y)
 			rm -r "$1"
 			echo "\"$1\" directory removed."		
 			;;
 		*)
 			echo "Ok, I won't remove it."
-			;;
 	esac
 }
 
@@ -69,7 +70,7 @@ manage_dir() {
 		echo "The $2 directory already exist. It may contain outdated things."
 		ask_remove_dir "$1"
 	fi
-	mkdir -p "$work_dir"
+	mkdir -p "$1"
 }
 
 manage_dir "$work_dir" 'work'
@@ -80,8 +81,9 @@ cd "$work_dir"
 archive_name=$(ls *.tar.gz 2>/dev/null)
 if [ $? -eq 0 ]; then
 	echo "Found $archive_name"
-	read -p 'Do you want to use this archive instead of downloading a new one? [y/N]' answer
-	case $answer in
+	read -n 1 -p 'Do you want to use this archive instead of downloading a new one? [y/N]' answer
+	echo
+	case "$answer" in
 		y|Y)
 			echo 'Ok, I will use this archive.'
 			;;
@@ -95,7 +97,7 @@ fi
 
 # Extracts the archive
 echo 'Extracting the files...'
-archive_name=$(ls *.tar.gz)
+archive_name="$(ls *.tar.gz)"
 if [ ! -d "$downloaded_dir" ]; then
 	mkdir "$downloaded_dir"
 fi
@@ -112,6 +114,7 @@ version_number=$(echo "$archive_name" | cut -d'-' -f3 | rev | cut -c 8- | rev)
 # Then, rev | cut -c 8- | rev  reverse the string, removes the first 7 characters, and re-reverse it.
 # This actually removes the last 8 characters, ie the ".tar.gz" part.
 # So in our example we'll get version_number=0.0.10
+
 cd "$downloaded_dir"
 icon_name=$(ls *.png)
 echo "Archive: $archive_name"
