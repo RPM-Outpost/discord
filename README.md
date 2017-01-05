@@ -13,8 +13,13 @@ Don't worry: the script detects if it isn't installed, and can install it for yo
 
 ### About root privileges
 Building an RPM package with root privileges is dangerous, because a mistake in SPEC file could result in running nasty commands.
-See [](http://serverfault.com/questions/10027/why-is-it-bad-to-build-rpms-as-root).
+See http://serverfault.com/questions/10027/why-is-it-bad-to-build-rpms-as-root.
 
 ## Update discord
 When a new version of discord is released, you can run the `create-package.sh` script again to create an updated package.
 Then, simply install the updated package with `sudo dnf install <rpm file>`.
+
+## Supported distributions
+- Fedora 24
+- Fedora 25
+It probably work on other RPM-based distros but I haven't tested it. Let me know if it works for you!
