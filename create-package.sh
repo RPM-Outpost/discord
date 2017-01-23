@@ -13,7 +13,7 @@ desktop_file="$work_dir/discord.desktop"
 
 # It's a bad idea to run rpmbuild as root!
 if [ "$(id -u)" = "0" ]; then
-	echo '----- WARNING -----'
+	echo '------------------------ WARNING ------------------------'
 	echo 'This script should NOT be executed with root privileges!'
 	echo 'Building rpm packages as root is dangerous and may harm the system!'
 	echo 'Actually, badly written RPM spec files may execute dangerous command in the system directories.'
@@ -23,9 +23,10 @@ if [ "$(id -u)" = "0" ]; then
 	if [ "$answer" != "do it!" ]; then
 		exit
 	fi
+	echo '------------------------ WARNING ------------------------'
 fi
 
-# Checks that rpmbuild is installed
+# Checks that rpmbuild is installed.
 if ! type 'rpmbuild' > /dev/null; then
 	echo 'You need the rpm development tools to create rpm packages.'
 	read -n 1 -p 'Do you want to install the rpmdevtools package now? [y/N]' answer
@@ -61,6 +62,7 @@ ask_remove_dir() {
 		*)
 			echo "Ok, I won't remove it."
 	esac
+	echo
 }
 
 # If the specified directory exists, asks the user if they want to remove it.
@@ -77,7 +79,7 @@ manage_dir "$work_dir" 'work'
 manage_dir "$rpm_dir" 'RPMs'
 cd "$work_dir"
 
-# Downloads discord if needed
+# Downloads discord if needed.
 archive_name="$(ls *.tar.gz 2>/dev/null)"
 if [ $? -eq 0 ]; then
 	echo "Found $archive_name"
@@ -95,7 +97,7 @@ else
 	download_discord
 fi
 
-# Extracts the archive
+echo
 echo 'Extracting the files...'
 archive_name="$(ls *.tar.gz)"
 if [ ! -d "$downloaded_dir" ]; then
@@ -117,24 +119,21 @@ version_number="$(echo "$archive_name" | cut -d'-' -f3 | rev | cut -c 8- | rev)"
 
 cd "$downloaded_dir"
 icon_name="$(ls *.png)"
-echo "Archive: $archive_name"
-echo "Version: $version_number"
-echo "Icon: $icon_name"
+echo "    Archive: $archive_name"
+echo "    Version: $version_number"
+echo "    Icon: $icon_name"
 
-# Creates a .desktop file
+
 echo 'Creating .desktop file...'
 sed "s/_version/$version_number/; s/_icon/$icon_name/" "$desktop_model" > "$desktop_file"
 
-# Builds the packages
-echo 'Creating the RPM package...'
+
+echo 'Creating the RPM package (this may take a while)...'
 rpmbuild --quiet -bb "$spec_file" --define "_topdir $work_dir" --define "_rpmdir $rpm_dir"\
 	--define "version_number $version_number" --define "downloaded_dir $downloaded_dir"\
 	--define "desktop_file $desktop_file"
 
-# Done
-echo '-----------'
-echo 'Done!'
+echo
+echo '------------------------- Done! -------------------------'
 echo "The RPM package is located in the \"RPMs/x86_64\" folder."
-
-# Removes the work directory if the user wants to
 ask_remove_dir "$work_dir"
