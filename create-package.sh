@@ -2,7 +2,6 @@
 # Author: TheElectronWill
 # This script downloads the latest version of Discord for linux, and creates a package with rpmbuild.
 
-# Defines the needed paths
 desktop_model="$PWD/discord.desktop"
 spec_file="$PWD/discord.spec"
 
@@ -69,7 +68,7 @@ ask_remove_dir() {
 # If it doesn't exist, creates it.
 manage_dir() {
 	if [ -d "$1" ]; then
-		echo "The $2 directory already exist. It may contain outdated things."
+		echo "The $2 directory already exist. It may contain outdated data."
 		ask_remove_dir "$1"
 	fi
 	mkdir -p "$1"
