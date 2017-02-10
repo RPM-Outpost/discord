@@ -3,7 +3,7 @@
 # This script downloads the latest version of Discord for linux, and creates a package with rpmbuild.
 
 desktop_model="$PWD/discord.desktop"
-spec_file="$PWD/discord.spec"
+spec_file="$PWD/discord-stable.spec"
 
 rpm_dir="$PWD/RPMs"
 work_dir="$PWD/work"
@@ -44,8 +44,8 @@ fi
 
 # Downloads the discord tar.gz archive and puts its name in the global variable archive_name.
 download_discord() {
-	echo 'Downloading discord canary for linux...'
-	wget -q --show-progress --content-disposition 'https://discordapp.com/api/download/canary?platform=linux&format=tar.gz'
+	echo 'Downloading discord stable for linux...'
+	wget -q --show-progress --content-disposition 'https://discordapp.com/api/download?platform=linux&format=tar.gz'
 	archive_name="$(ls *.tar.gz)"
 }
 
@@ -110,11 +110,11 @@ tar -xzf "$archive_name" -C "$downloaded_dir" --strip 1
 echo 'Analysing the files...'
 version_number="$(echo "$archive_name" | cut -d'-' -f3 | rev | cut -c 8- | rev)"
 # Explaination on how it works:
-# cut -d'-' -f3  splits the archive's name around the '-' character, and takes the 3rd part
-# For example if archive_name is "discord-canary-0.0.10.tar.gz" we get "0.0.10.tar.gz"
+# cut -d'-' -f2  splits the archive's name around the '-' character, and takes the 2nd part
+# For example if archive_name is "discord-0.0.1.tar.gz" we get "0.0.1.tar.gz"
 # Then, rev | cut -c 8- | rev  reverse the string, removes the first 7 characters, and re-reverse it.
 # This actually removes the last 8 characters, ie the ".tar.gz" part.
-# So in our example we'll get version_number=0.0.10
+# So in our example we'll get version_number=0.0.1
 
 cd "$downloaded_dir"
 icon_name="$(ls *.png)"
