@@ -108,7 +108,7 @@ tar -xzf "$archive_name" -C "$downloaded_dir" --strip 1
 
 # Gets the discord's version number + icon file name
 echo 'Analysing the files...'
-version_number="$(echo "$archive_name" | cut -d'-' -f3 | rev | cut -c 8- | rev)"
+version_number="$(echo "$archive_name" | cut -d'-' -f2 | rev | cut -c 8- | rev)"
 # Explaination on how it works:
 # cut -d'-' -f2  splits the archive's name around the '-' character, and takes the 2nd part
 # For example if archive_name is "discord-0.0.1.tar.gz" we get "0.0.1.tar.gz"
