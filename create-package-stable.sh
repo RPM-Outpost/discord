@@ -124,7 +124,7 @@ echo "    Icon: $icon_name"
 
 
 echo 'Creating .desktop file...'
-sed "s/_version/$version_number/; s/_icon/$icon_name/" "$desktop_model" > "$desktop_file"
+sed "s/_version/$version_number/; s/_icon/$icon_name/; s/_exe/Discord/" "$desktop_model" > "$desktop_file"
 
 
 echo 'Creating the RPM package (this may take a while)...'
