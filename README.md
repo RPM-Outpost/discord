@@ -20,7 +20,7 @@ When a new version of discord is released, you can run the `create-package.sh` s
 Then, simply install the updated package with `sudo dnf install <rpm file>`.
 
 ## Supported distributions
-- Fedora 24
 - Fedora 25
+- Fedora 26
 
 It probably work on other RPM-based distros but I haven't tested it. Let me know if it works for you!
