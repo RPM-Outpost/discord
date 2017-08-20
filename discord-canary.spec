@@ -15,7 +15,7 @@ Group:		Applications/Internet
 License:	Proprietary
 URL:		https://discordapp.com/
 BuildArch:	x86_64
-Requires:   glibc, alsa-lib, GConf2, libnotify, nspr >= 4.13, nss >= 3.27, libstdc++ >= 6, libX11 >= 1.6, libXtst >= 1.2, libappindicator
+Requires:   glibc, alsa-lib, GConf2, libnotify, nspr >= 4.13, nss >= 3.27, libstdc++ >= 6, libX11 >= 1.6, libXtst >= 1.2, libappindicator, libcxx%{?_isa}
 
 %description
 All-in-one voice and text chat for gamers that’s free, secure, and works on both your desktop and phone. 
