@@ -1,10 +1,10 @@
 [Desktop Entry]
-Name=Discord
+Name=@name
 Comment=Free voice and text chat for gamers
 StartupWMClass=discord
-Version=_version
-Icon=/opt/discord/_icon
-Exec=/opt/discord/_exe
+Version=@version
+Icon=/opt/discord-@type/@icon
+Exec=/opt/discord-@type/@exe
 Type=Application
 Terminal=false
 StartupNotify=true

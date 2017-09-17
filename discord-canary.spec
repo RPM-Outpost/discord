@@ -3,12 +3,12 @@
 # downloaded_dir
 # desktop_file
 
-%define install_dir /opt/discord
+%define install_dir /opt/discord-canary
 %define apps_dir /usr/share/applications
 
-Name:		discord
+Name:		discord-canary
 Version:	%{version_number}
-Release:	canary%{?dist}
+Release:	1%{?dist}
 Summary:	Free Voice and Text Chat for Gamers.
 
 Group:		Applications/Internet
@@ -33,6 +33,7 @@ cp "%{desktop_file}" "%{buildroot}%{apps_dir}"
 chmod +x "%{buildroot}%{install_dir}"/*.so
 
 %files
-/*
+%{install_dir}
+%{apps_dir}/*
 
 
