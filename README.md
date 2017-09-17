@@ -19,7 +19,7 @@ Open a terminal and run `./create-package.sh stable` to get the stable version o
 When a new version of discord is released, simply run the script again to get the updated version.
 
 ### Requirements
-The `rpmdevtools` is required to build RPM packages. The script detects if it isn't installed and offers to install it.
+The `rpmdevtools` package is required to build RPM packages. The script detects if it isn't installed and offers to install it.
 
 ### About root privileges
 Building an RPM package with root privileges is dangerous, see http://serverfault.com/questions/10027/why-is-it-bad-to-build-rpms-as-root.
