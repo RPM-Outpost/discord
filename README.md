@@ -1,6 +1,6 @@
-# Discord rpm
 ![discord logo](discord-logo-wordmark.png)
 
+# Discord rpm
 Unofficial RPM package for Discord.
 
 ## How to use
@@ -25,5 +25,4 @@ The `rpmdevtools` package is required to build RPM packages. The script detects 
 Building an RPM package with root privileges is dangerous, see http://serverfault.com/questions/10027/why-is-it-bad-to-build-rpms-as-root.
 
 ## Screenshot
-
 ![beautiful screenshot](screenshot.png)
