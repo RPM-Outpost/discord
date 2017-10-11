@@ -2,7 +2,7 @@
 Name=@name
 Comment=Free voice and text chat for gamers
 StartupWMClass=discord
-Version=@version
+Version=1.0
 Icon=/opt/discord-@type/@icon
 Exec=/opt/discord-@type/@exe
 Type=Application
