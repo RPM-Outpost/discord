@@ -15,7 +15,12 @@ Open a terminal and run `./create-package.sh stable` to get the stable version o
 
 ## More informations
 
+### Warning - no accents
+
+The path where you run the script must **not** contain any special character like é, ü, etc. This is a limitation of the rpm tools.
+
 ### How to update
+
 When a new version of discord is released, simply run the script again to get the updated version.
 
 ### Requirements
