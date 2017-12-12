@@ -36,4 +36,6 @@ chmod +x "%{buildroot}%{install_dir}"/*.so
 %{install_dir}
 %{apps_dir}/*
 
-
+%post
+cd "%{install_dir}"
+sh postinst.sh
