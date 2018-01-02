@@ -11,7 +11,7 @@ Open a terminal and run `./create-package.sh stable` to get the stable version o
 - Creates a ready-to-use RPM package
 - Discord stable and canary can be installed at the same time
 - Adds Discord to the applications' list with a nice HD icon
-- Tested on Fedora 26 (may work on other distributions)
+- Supports Fedora (26, 27) and OpenSUSE (Leap)
 
 ## More informations
 
