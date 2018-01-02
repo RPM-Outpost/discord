@@ -1,4 +1,6 @@
 #!/bin/bash
+# Author: TheElectronWill
+# Script to use terminal colors easily, made for https://github.com/RPM-Outpost
 
 # Colors IDs
 id_black=0

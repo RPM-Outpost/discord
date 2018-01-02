@@ -1,4 +1,7 @@
 #!/bin/bash
+# Author: TheElectronWill
+# Made for https://github.com/RPM-Outpost
+# This script requires terminal-colors.sh and common-functions.sh
 
 # It's a bad idea to run rpmbuild as root!
 if [ "$(id -u)" = "0" ]; then
@@ -24,7 +27,7 @@ if ! type 'rpmbuild' > /dev/null; then
 	echo
 	case "$answer" in
 		y|Y)
-			sudo -p 'Enter your password to install rpmdevtools: ' dnf install rpmdevtools
+			sudo_install_prompt 'Enter your password to install rpmdevtools: ' rpmdevtools
 			;;
 		*) 
 			echo "${reset}The package won't be installed. Exiting now."

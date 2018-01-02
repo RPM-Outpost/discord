@@ -1,4 +1,26 @@
 #!/bin/bash
+# Author: TheElectronWill
+# Various functions used by the scripts of https://github.com/RPM-Outpost
+# This script requires terminal-colors.sh
+
+# Initializes $installer and $distrib
+if hash dnf 2>/dev/null; then
+	# Fedora, CentOS
+	installer="dnf install"
+	distrib="redhat"
+elif hash zypper 2>/dev/null; then
+	# OpenSUSE
+	installer="zypper install"
+	distrib="suse"
+elif hash urpmi 2>/dev/null; then
+	# Mageia
+	installer="urpmi"
+	distrib="mageia"
+else
+	# Unknown
+	installer="exit"
+	distrib="unknown"
+fi
 
 # ask_yesno question
 ## Asks a yes/no question and stores the result in the 'answer' variable
@@ -35,7 +57,7 @@ manage_dir() {
 	mkdir -p "$1"
 }
 
-# ask_installpkg
+# ask_installpkg [all] [allowerasing]
 ## Asks the user if they want to install the newly created package.
 ask_installpkg() {
 	if [[ $1 == "all" || $2 == "all" ]]; then
@@ -63,7 +85,25 @@ ask_installpkg() {
 	esac
 }
 
-# extract archive_file destination [options]
+# sudo_install pkg [options]
+sudo_install() {
+	if [[ $# -eq 1 ]]; then
+		sudo $installer "$1"
+	else
+		sudo $installer "$1" $2
+	fi
+}
+
+# sudo_install_prompt prompt pkg [options]
+sudo_install_prompt() {
+	if [[ $# -eq 2 ]]; then
+		sudo -p "$1" $installer "$2"
+	else
+		sudo -p "$1" $installer "$2" $3
+	fi
+}
+
+# extract archive_file destination [option1 [option2]]
 extract() {
 	echo "Extracting \"$1\"..."
 	if [[ "$1" == *.tar.gz ]]; then
