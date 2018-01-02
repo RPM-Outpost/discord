@@ -6,7 +6,7 @@
 # Initializes $installer and $distrib
 if hash dnf 2>/dev/null; then
 	# Fedora, CentOS
-	installer="dnf install"
+	installer="dnf install --allowerasing"
 	distrib="redhat"
 elif hash zypper 2>/dev/null; then
 	# OpenSUSE
@@ -57,7 +57,7 @@ manage_dir() {
 	mkdir -p "$1"
 }
 
-# ask_installpkg [all] [allowerasing]
+# ask_installpkg [all]
 ## Asks the user if they want to install the newly created package.
 ask_installpkg() {
 	if [[ $1 == "all" || $2 == "all" ]]; then
@@ -69,16 +69,12 @@ ask_installpkg() {
 	case "$answer" in
 		y|Y)
 			cd "$rpm_dir/$arch"
-			if [[ $1 == "all" || $2 == "all" ]]; then
+			if [[ $1 == "all" ]]; then
 				rpm_filename=$(find -type f -name '*.rpm' -printf '%P\n')
 			else
 				rpm_filename=$(find -maxdepth 1 -type f -name '*.rpm' -printf '%P\n' -quit)
 			fi
-			if [[ $1 == "allowerasing" || $2 == "allowerasing" ]]; then
-				sudo dnf install --allowerasing $rpm_filename
-			else
-				sudo dnf install "$rpm_filename"
-			fi
+			sudo_install $rpm_filename
 			;;
 		*)
 			echo "Packag$pl not installed."
@@ -87,11 +83,7 @@ ask_installpkg() {
 
 # sudo_install pkg [options]
 sudo_install() {
-	if [[ $# -eq 1 ]]; then
-		sudo $installer "$1"
-	else
-		sudo $installer "$1" $2
-	fi
+	sudo $installer "$@"
 }
 
 # sudo_install_prompt prompt pkg [options]

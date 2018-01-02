@@ -1,21 +1,24 @@
 # Defined by the caller (ie the script):
-# version_number
+# pkg_name
+# pkg_version
+# pkg_req
 # downloaded_dir
 # desktop_file
 
-%define install_dir /opt/discord-canary
+%define install_dir /opt/discord-stable
 %define apps_dir /usr/share/applications
+%define _build_id_links none
 
-Name:		discord-canary
-Version:	%{version_number}
-Release:	1%{?dist}
+Name:		%{pkg_name}
+Version:	%{pkg_version}
+Release:	2%{?dist}
 Summary:	Free Voice and Text Chat for Gamers.
 
 Group:		Applications/Internet
 License:	Proprietary
 URL:		https://discordapp.com/
 BuildArch:	x86_64
-Requires:   glibc, alsa-lib, GConf2, libnotify, nspr >= 4.13, nss >= 3.27, libstdc++ >= 6, libX11 >= 1.6, libXtst >= 1.2, libappindicator, libcxx%{?_isa}
+Requires:   %{pkg_req}
 
 %description
 All-in-one voice and text chat for gamers that’s free, secure, and works on both your desktop and phone. 
