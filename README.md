@@ -4,7 +4,9 @@
 Unofficial RPM package for Discord.
 
 ## How to use
-Open a terminal and run `./create-package.sh stable` to get the stable version of Discord. Replace `stable` by `canary` to get the beta version.
+1. [Download](https://github.com/RPM-Outpost/discord/archive/master.zip) and extract the zip.
+2. Open a terminal and `cd` to the `discord-master` directory.
+3. Run `./create-package.sh stable` to get the stable version of Discord, or `./create-package.sh canary` to get the unstable beta version.
 
 ## Features
 - Downloads the latest version of Discord from the official website
