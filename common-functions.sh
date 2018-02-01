@@ -5,8 +5,12 @@
 
 # Initializes $installer and $distrib
 if hash dnf 2>/dev/null; then
-	# Fedora, CentOS
+	# Fedora, CentOS with dnf installed
 	installer="dnf install --allowerasing"
+	distrib="redhat"
+elif hash yum 2>/dev/null; then
+	# CentOS
+	installer="yum install"
 	distrib="redhat"
 elif hash zypper 2>/dev/null; then
 	# OpenSUSE
