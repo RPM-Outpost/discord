@@ -26,6 +26,9 @@ else
 	distrib="unknown"
 fi
 
+# Initializes $wget_progress: detects if the option --show-progress is available
+wget --help | grep -q '\--show-progress' && wget_progress="-q --show-progress" || wget_progress=""
+
 # ask_yesno question
 ## Asks a yes/no question and stores the result in the 'answer' variable
 ask_yesno() {
