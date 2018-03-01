@@ -20,14 +20,14 @@ elif [[ $distrib == "suse" ]]; then
 	pkg_req='libatomic1, glibc, alsa, gconf2, libnotify, mozilla-nspr >= 4.13, mozilla-nss >= 3.27, libstdc++6, libX11 >= 1.6, libXtst >= 1.2, libappindicator, libc++1, libXScrnSaver'
 else
 	disp "${red}Sorry, your distribution isn't supported (yet).$reset"
-	exit
+	exit 1
 fi	
 
-# Checks that the version (stable/canary) is given as a parameter.
-if [[ $# -ne 1 || $1 != "stable" && $1 != "canary" ]]; then
+# Checks that the version (stable/ptb/canary) is given as a parameter.
+if [[ $# -ne 1 || $1 != "stable" && $1 != "ptb" && $1 != "canary" ]]; then
 	disp "${red}Wrong or missing parameters!$reset"
-	echo 'Usage: create-package.sh stable/canary'
-	exit
+	echo 'Usage: create-package.sh [ stable | ptb | canary ]'
+	exit 1
 fi
 
 # Settings according to the discord type (canary or stable)
@@ -38,19 +38,33 @@ if [[ $1 == "canary" ]]; then
 	download_url='https://discordapp.com/api/download/canary'
 	cut_part=3
 	desktop_file="$work_dir/discord-canary.desktop"
+elif [[ $1 == "ptb" ]]; then
+	app_name='Discord PTB'
+	exe_name='DiscordPTB'
+	pkg_name='discord-ptb'
+	download_url='https://discordapp.com/api/download/ptb'
+	cut_part=3
+	desktop_file="$work_dir/discord-ptb.desktop"
 else
 	app_name='Discord'
 	exe_name='Discord'
-	pkg_name='discord-stable'
+	pkg_name='discord'
 	download_url='https://discordapp.com/api/download'
 	cut_part=2
-	desktop_file="$work_dir/discord-stable.desktop"
+	desktop_file="$work_dir/discord.desktop"
 fi
 
 # Downloads the discord tar.gz archive and puts its name in the global variable archive_name.
 download_discord() {
 	echo "Downloading $app_name for linux..."
-	wget $wget_progress --content-disposition "${download_url}?platform=linux&format=tar.gz"
+    if [[ "$downloader" == 'wget' ]]; then
+      wget --content-disposition $progress "${download_url}?platform=linux&format=tar.gz"
+    else
+      # curl's content disposition tends to fail, get the direct URL manually instead and remove the carriage return
+      direct_url=$(curl -sSI "${download_url}?platform=linux&format=tar.gz" | grep location | awk '{print $2}')
+      direct_url=${direct_url%$'\r'}
+      curl -SO $progress $direct_url
+    fi
 	archive_name="$(ls *.tar.gz)"
 }
 
@@ -77,13 +91,11 @@ fi
 
 # Extracts the archive:
 echo
-if [ ! -d "$downloaded_dir" ]; then
-	mkdir "$downloaded_dir"
-fi
+mkdir -p "$downloaded_dir"
 extract "$archive_name" "$downloaded_dir" "--strip 1" # --strip 1 gets rid of the top archive's directory
 
 
-# Gets the discord's version number + icon file name
+# Gets Discord's version number + icon file name
 echo 'Analysing the files...'
 pkg_version="$(echo "$archive_name" | cut -d'-' -f$cut_part | rev | cut -c 8- | rev)"
 # cut -d'-' -fn  splits the archive's name around the '-' character, and takes the n-th part
@@ -108,7 +120,7 @@ rpmbuild --quiet -bb "$spec_file" --define "_topdir $work_dir" --define "_rpmdir
 	--define "desktop_file $desktop_file" --define "pkg_name $pkg_name" --define "pkg_req $pkg_req"
 
 disp "${bgreen}Done!${reset_font}"
-disp "The RPM package is located in the \"RPMs/$arch\" folder."
+disp "The RPM package is located in the \"RPMs/$arch\" directory."
 disp '----------------'
 
 ask_remove_dir "$work_dir"
