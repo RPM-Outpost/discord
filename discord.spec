@@ -5,7 +5,7 @@
 # downloaded_dir
 # desktop_file
 
-%define install_dir /opt/discord-stable
+%define install_dir /opt/%{pkg_name}
 %define apps_dir /usr/share/applications
 %define _build_id_links none
 
