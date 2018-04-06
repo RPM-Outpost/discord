@@ -16,8 +16,7 @@ Unofficial RPM package for Discord.
 - Creates a ready-to-use RPM package
 - Discord Stable, PTB, and Canary can be installed at the same time
 - Adds Discord to the applications list with a nice HD icon
-- Supports Fedora (26, 27), OpenSUSE (Leap) and CentOS (7.x)
-
+- Supports Fedora (26, 27) and OpenSUSE (Leap).
 ## More information
 
 ### Warning - no accents
