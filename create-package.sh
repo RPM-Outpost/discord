@@ -15,7 +15,7 @@ arch='x86_64'
 
 # Settings according to the distribution
 if [[ $distrib == "redhat" ]]; then
-	pkg_req='libatomic, glibc, alsa-lib, GConf2, libnotify, nspr >= 4.13, nss >= 3.27, libstdc++, libX11 >= 1.6, libXtst >= 1.2, libappindicator, libcxx%{?_isa}, libXScrnSaver'
+	pkg_req='libatomic%{?_isa}, glibc%{?_isa}, alsa-lib%{?_isa}, GConf2%{?_isa}, libnotify%{?_isa}, nspr%{?_isa} >= 4.13, nss%{?_isa} >= 3.27, libstdc++%{?_isa}, libX11%{?_isa} >= 1.6, libXtst%{?_isa} >= 1.2, libappindicator%{?_isa}, libcxx%{?_isa}, libXScrnSaver%{?_isa}'
 elif [[ $distrib == "suse" ]]; then
 	pkg_req='libatomic1, glibc, alsa, gconf2, libnotify, mozilla-nspr >= 4.13, mozilla-nss >= 3.27, libstdc++6, libX11 >= 1.6, libXtst >= 1.2, libappindicator, libc++1, libXScrnSaver'
 else
