@@ -34,6 +34,7 @@ mkdir -p "%{buildroot}%{apps_dir}"
 mv "%{downloaded_dir}"/* "%{buildroot}%{install_dir}"
 cp "%{desktop_file}" "%{buildroot}%{apps_dir}"
 chmod +x "%{buildroot}%{install_dir}"/*.so
+chmod +x "%{buildroot}%{install_dir}"/Discord*
 
 %files
 %{install_dir}
