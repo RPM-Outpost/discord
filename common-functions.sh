@@ -26,17 +26,8 @@ else
 	distrib="unknown"
 fi
 
-# Initializes $downloader: checks if wget is installed and fallbacks to curl if it isn't
-hash wget 2>/dev/null && downloader='wget' || downloader='curl'
-
-# Initializes $progress: detects if the downloader has a progress option
-if [[ "$downloader" == 'wget' ]]; then
-    wget --help | grep -q '\--show-progress' && \
-	  progress='-q --show-progress' || progress=''
-else
-    curl --help | grep -q '\--progress-bar' && \
-      progress='--progress-bar' || progress=''
-fi
+# Initializes $wget_progress: detects if the option --show-progress is available
+wget --help | grep -q '\--show-progress' && wget_progress="-q --show-progress" || wget_progress=""
 
 # ask_yesno question
 ## Asks a yes/no question and stores the result in the 'answer' variable
@@ -67,7 +58,7 @@ ask_remove_dir() {
 ## If it doesn't exist, creates it.
 manage_dir() {
 	if [ -d "$1" ]; then
-		echo "The $2 directory already exists and may contain outdated data."
+		echo "The $2 directory already exist and may contain outdated data."
 		ask_remove_dir "$1"
 	fi
 	mkdir -p "$1"

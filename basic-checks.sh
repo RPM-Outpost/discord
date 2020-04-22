@@ -23,17 +23,17 @@ fi
 if ! type 'rpmbuild' > /dev/null; then
 	echo 'You need the rpm development tools to create rpm packages.'
 	style $bold
-	read -n 1 -p '> Install the rpmdevtools package now? [y/N]: ' answer
+	read -n 1 -p '> Install the required package (rpm-build) now? [y/N]: ' answer
 	echo
+	style $reset
 	case "$answer" in
 		y|Y)
-			sudo_install_prompt 'Enter your password to install rpmdevtools: ' rpmdevtools
+			sudo_install_prompt 'Enter your password to install rpm-build: ' rpm-build
 			;;
 		*) 
-			echo "${reset}The package won't be installed. Exiting now."
+			echo "The package won't be installed. Exiting now."
 			exit
 	esac
-	style $reset
 else
 	disp "${green}rpmbuild detected.$reset"
 fi
