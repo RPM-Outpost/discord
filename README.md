@@ -10,11 +10,12 @@ Unofficial RPM package for Discord.
     - Discord Stable: `./create-package.sh stable`
     - Discord PTB: &nbsp;&nbsp;&nbsp; `./create-package.sh ptb`
     - Discord Canary: `./create-package.sh canary`
+    - Discord Development: `./create-package.sh development`
 
 ## Features
 - Downloads the latest version of Discord from the official website
 - Creates a ready-to-use RPM package
-- Discord Stable, PTB, and Canary can be installed at the same time
+- Discord Stable, PTB, Canary, and Development can be installed at the same time
 - Adds Discord to the applications list with a nice HD icon
 - Supports Fedora (31) and OpenSUSE (Leap 15.1+).
 
