@@ -24,9 +24,9 @@ else
 fi	
 
 # Checks that the version (stable/ptb/canary) is given as a parameter.
-if [[ $# -ne 1 || $1 != "stable" && $1 != "ptb" && $1 != "canary" ]]; then
+if [[ $# -ne 1 || $1 != "stable" && $1 != "ptb" && $1 != "canary" && $1 != "development" ]]; then
 	disp "${red}Wrong or missing parameters!$reset"
-	echo 'Usage: create-package.sh [ stable | ptb | canary ]'
+	echo 'Usage: create-package.sh [ stable | ptb | canary | development ]'
 	exit 1
 fi
 
@@ -45,6 +45,13 @@ elif [[ $1 == "ptb" ]]; then
 	download_url='https://discordapp.com/api/download/ptb'
 	cut_part=3
 	desktop_file="$work_dir/discord-ptb.desktop"
+elif [[ $1 == "development" ]]; then
+        app_name='Discord Development'
+        exe_name='DiscordDevelopment'
+        pkg_name='discord-development'
+        download_url='https://discordapp.com/api/download/development'
+        cut_part=3
+        desktop_file="$work_dir/discord-development.desktop"
 else
 	app_name='Discord'
 	exe_name='Discord'
