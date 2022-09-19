@@ -8,6 +8,9 @@
 %define install_dir /opt/%{pkg_name}
 %define apps_dir /usr/share/applications
 %define _build_id_links none
+%global _enable_debug_package 0
+%global debug_package %{nil}
+%global __os_install_post /usr/lib/rpm/brp-compress %{nil}
 
 Name:		%{pkg_name}
 Version:	%{pkg_version}
