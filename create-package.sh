@@ -2,6 +2,16 @@
 # Author: TheElectronWill
 # This script downloads the latest version of Discord for linux, and creates a package with rpmbuild.
 
+# Jump to the script's directory.
+# Taken from # https://stackoverflow.com/a/246128/1667018 # and slightly modified.
+SOURCE="${BASH_SOURCE[0]}"
+while [ -L "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ "$SOURCE" != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+cd "$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
 source terminal-colors.sh # Adds color variables
 source common-functions.sh # Adds utilities functions
 source basic-checks.sh # Checks that rpmbuild is available and that the script isn't started as root

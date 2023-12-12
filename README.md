@@ -12,6 +12,8 @@ Unofficial RPM package for Discord.
     - Discord Canary: `./create-package.sh canary`
     - Discord Development: `./create-package.sh development`
 
+Alternatively, you can call `discord-master/create-package.sh` directly, without changing your working directory.
+
 ## Features
 - Downloads the latest version of Discord from the official website
 - Creates a ready-to-use RPM package
