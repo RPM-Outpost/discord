@@ -2,6 +2,8 @@
 # Author: TheElectronWill
 # This script downloads the latest version of Discord for linux, and creates a package with rpmbuild.
 
+cd "$(dirname "$(readlink -f -- "$0")")"
+
 source terminal-colors.sh # Adds color variables
 source common-functions.sh # Adds utilities functions
 source basic-checks.sh # Checks that rpmbuild is available and that the script isn't started as root
