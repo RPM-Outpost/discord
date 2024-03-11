@@ -66,7 +66,8 @@ fi
 # Downloads the discord tar.gz archive and puts its name in the global variable archive_name.
 download_discord() {
 	echo "Downloading $app_name for linux..."
-	wget --content-disposition $wget_progress "${download_url}?platform=linux&format=tar.gz"
+	archive_url=$(curl -is --write-out "%{redirect_url}\n"  "${download_url}?platform=linux&format=tar.gz" -o /dev/null)
+	wget --content-disposition $wget_progress "${archive_url}"
 	archive_name="$(ls *.tar.gz)"
 }
 
