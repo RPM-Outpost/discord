@@ -44,6 +44,7 @@ find "%{buildroot}%{install_dir}" -maxdepth 1 -type f \
     -exec chmod +x {} +
 
 %files
+%defattr(-,root,root,-)
 %{install_dir}
 %{apps_dir}/*
 
