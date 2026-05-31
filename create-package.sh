@@ -37,28 +37,28 @@ if [[ $1 == "canary" ]]; then
 	app_name='Discord Canary'
 	exe_name='DiscordCanary'
 	pkg_name='discord-canary'
-	download_url='https://discordapp.com/api/download/canary'
+	download_url='https://discord.com/api/download/canary'
 	cut_part=3
 	desktop_file="$work_dir/discord-canary.desktop"
 elif [[ $1 == "ptb" ]]; then
 	app_name='Discord PTB'
 	exe_name='DiscordPTB'
 	pkg_name='discord-ptb'
-	download_url='https://discordapp.com/api/download/ptb'
+	download_url='https://discord.com/api/download/ptb'
 	cut_part=3
 	desktop_file="$work_dir/discord-ptb.desktop"
 elif [[ $1 == "development" ]]; then
         app_name='Discord Development'
         exe_name='DiscordDevelopment'
         pkg_name='discord-development'
-        download_url='https://discordapp.com/api/download/development'
+        download_url='https://discord.com/api/download/development'
         cut_part=3
         desktop_file="$work_dir/discord-development.desktop"
 else
 	app_name='Discord'
-	exe_name='Discord'
+	exe_name='discord'
 	pkg_name='discord'
-	download_url='https://discordapp.com/api/download'
+	download_url='https://discord.com/api/download'
 	cut_part=2
 	desktop_file="$work_dir/discord.desktop"
 fi
@@ -66,9 +66,30 @@ fi
 # Downloads the discord tar.gz archive and puts its name in the global variable archive_name.
 download_discord() {
 	echo "Downloading $app_name for linux..."
-	archive_url=$(curl -is --write-out "%{redirect_url}\n"  "${download_url}?platform=linux&format=tar.gz" -o /dev/null)
-	wget --content-disposition $wget_progress "${archive_url}"
-	archive_name="$(ls *.tar.gz)"
+	archive_url=$(
+		curl -fsSLI -o /dev/null -w '%{url_effective}' \
+			"${download_url}?platform=linux&format=tar.gz"
+	)
+	if [[ $? -ne 0 || -z "$archive_url" ]]; then
+		disp "${red}Failed to resolve Discord download URL.$reset"
+		exit 1
+	fi
+
+	archive_name="${archive_url%%\?*}"
+	archive_name="${archive_name##*/}"
+	if [[ "$archive_name" != *.tar.gz ]]; then
+		disp "${red}Unexpected Discord archive URL: $archive_url$reset"
+		exit 1
+	fi
+
+	if ! curl -fL --progress-bar -o "$archive_name" "$archive_url"; then
+		disp "${red}Failed to download Discord archive.$reset"
+		exit 1
+	fi
+	if [[ ! -s "$archive_name" ]]; then
+		disp "${red}Downloaded Discord archive is empty.$reset"
+		exit 1
+	fi
 }
 
 manage_dir "$work_dir" 'work'
@@ -94,8 +115,12 @@ fi
 
 # Extracts the archive:
 echo
+rm -rf "$downloaded_dir"
 mkdir -p "$downloaded_dir"
-extract "$archive_name" "$downloaded_dir" "--strip 1" # --strip 1 gets rid of the top archive's directory
+if ! extract "$archive_name" "$downloaded_dir" "--strip 1"; then
+	disp "${red}Failed to extract Discord archive.$reset"
+	exit 1
+fi
 
 
 # Gets Discord's version number + icon file name
@@ -108,7 +133,11 @@ pkg_version="$(echo "$archive_name" | cut -d'-' -f$cut_part | rev | cut -c 8- | 
 # So in our example we'll get pkg_version=0.0.1
 
 cd "$downloaded_dir"
-icon_name="$(ls *.png)"
+icon_name="$(find . -maxdepth 1 -type f -name '*.png' -printf '%f\n' -quit)"
+if [[ -z "$pkg_version" || -z "$icon_name" ]]; then
+	disp "${red}Failed to detect Discord version or icon.$reset"
+	exit 1
+fi
 echo " -> Version: $pkg_version"
 echo " -> Icon: $icon_name"
 
@@ -118,9 +147,12 @@ sed "s/@version/$pkg_version/; s/@icon/$icon_name/; s/@exe/$exe_name/; s/@name/$
 	"$desktop_model" > "$desktop_file"
 
 disp "${yellow}Creating the RPM package (this may take a while)..."
-rpmbuild --quiet -bb "$spec_file" --define "_topdir $work_dir" --define "_rpmdir $rpm_dir"\
+if ! rpmbuild --quiet -bb "$spec_file" --define "_topdir $work_dir" --define "_rpmdir $rpm_dir"\
 	--define "pkg_version $pkg_version" --define "downloaded_dir $downloaded_dir"\
-	--define "desktop_file $desktop_file" --define "pkg_name $pkg_name" --define "pkg_req $pkg_req"
+	--define "desktop_file $desktop_file" --define "pkg_name $pkg_name" --define "pkg_req $pkg_req"; then
+	disp "${red}Failed to create the RPM package.$reset"
+	exit 1
+fi
 
 disp "${bgreen}Done!${reset_font}"
 disp "The RPM package is located in the \"RPMs/$arch\" directory."
