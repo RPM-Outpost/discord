@@ -34,12 +34,17 @@ It’s time to ditch Skype and TeamSpeak.
 %install
 mkdir -p "%{buildroot}%{install_dir}"
 mkdir -p "%{buildroot}%{apps_dir}"
-mv "%{downloaded_dir}"/* "%{buildroot}%{install_dir}"
+cp -a "%{downloaded_dir}"/. "%{buildroot}%{install_dir}"
 cp "%{desktop_file}" "%{buildroot}%{apps_dir}"
-chmod +x "%{buildroot}%{install_dir}"/*.so
-chmod +x "%{buildroot}%{install_dir}"/Discord*
+find "%{buildroot}%{install_dir}" -type f -name '*.so' -exec chmod +x {} +
+find "%{buildroot}%{install_dir}" -maxdepth 1 -type f \
+    \( -name 'Discord' -o -name 'DiscordCanary' -o -name 'DiscordPTB' \
+    -o -name 'DiscordDevelopment' -o -name 'discord' \
+    -o -name '*_bootstrap' \) \
+    -exec chmod +x {} +
 
 %files
+%defattr(-,root,root,-)
 %{install_dir}
 %{apps_dir}/*
 
